@@ -37,15 +37,31 @@ namespace Shopping_Site.Repositories
             return unit;
         }
 
-        public List<Unit> GetItems()
+        public List<Unit> GetItems(string SortProperty, SortOrder sortOrder)
         {
             List<Unit> units = _context.Units.ToList();
+
+            if (SortProperty.ToLower() == "name")
+            {
+                if(sortOrder == SortOrder.Ascending) 
+                    units=units.OrderBy(x => x.Name).ToList();
+                else
+                    units = units.OrderByDescending(x => x.Name).ToList();
+            }
+            else
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    units = units.OrderBy(x => x.Description).ToList();
+                else
+                    units = units.OrderByDescending(x => x.Description).ToList();
+
+            }
             return units;
         }
 
         public Unit GetUnit(int id)
         {
-            Unit unit = _context.Units.Where(x => x.Id == id).FirstOrDefault();
+            Unit unit =  _context.Units.Where(x => x.Id == id).FirstOrDefault();
             return unit;
         }
        

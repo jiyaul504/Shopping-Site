@@ -4,8 +4,8 @@ namespace Shopping_Site.Interfaces
 {
     public interface IUnit
     {
-        List<Unit> GetItems();
-        Unit GetUnit(int id);
+        List<Unit> GetItems(string SortProperty, SortOrder sortOrder);//read All
+        Unit GetUnit(int id);// read particular item
 
         Unit Create(Unit unit);
 

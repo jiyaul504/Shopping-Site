@@ -2,6 +2,7 @@
 
 namespace Shopping_Site.Models
 {
+    public enum SortOrder { Ascending=0, Descending=1 }
     public class Unit
     {
         public int Id { get; set; }

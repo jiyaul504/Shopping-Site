@@ -6,18 +6,52 @@ using Shopping_Site.Models;
 
 namespace Shopping_Site.Controllers
 {
+    
     public class UnitController : Controller
     {
-        public IActionResult Index()// read method of crud operations. it lists all data from the Units table.
+        public IActionResult Index(string sortExpression="")// read method of crud operations. it lists all data from the Units table.
         {
-            List<Unit> units = _unitRepo.GetItems();
+            ViewData["SortParamName"] = "name";
+            ViewData["SortParamDesc"] = "description";
+
+            SortOrder sortOrder;
+            string sortproperty;
+
+            switch (sortExpression.ToLower())
+            {
+                case "name_desc":
+                    sortOrder = SortOrder.Descending;
+                    sortproperty = "name";
+                    ViewData["SortParamName"] = "name";
+                    break;
+
+                case "description":
+                    sortOrder = SortOrder.Ascending;
+                    sortproperty = "description";
+                    ViewData["SortParamDesc"] = "description_desc";
+                    break;
+
+                case "description_desc":
+                    sortOrder = SortOrder.Descending;
+                    sortproperty = "description";
+                    ViewData["SortParamDesc"] = "description";
+                    break;
+
+                default:
+                    sortOrder = SortOrder.Ascending; 
+                    sortproperty = "name";
+                    ViewData["SortParamName"] = "name_desc";
+                    break;
+            }
+
+            List<Unit> units = _unitRepo.GetItems(sortproperty,sortOrder);//_context .units.Tolist();
             return View(units);
         }
         
 
         private readonly IUnit _unitRepo;
 
-        public UnitController(IUnit unitrepo)
+        public UnitController(IUnit unitrepo)// here the repository will be passed by the dependencey injection
         {
             
             _unitRepo= unitrepo;
